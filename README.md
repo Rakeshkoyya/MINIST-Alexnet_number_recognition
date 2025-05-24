@@ -42,7 +42,7 @@ MINIST-Alexnet/
 
 2. Install dependencies:
    ```bash
-   pip install torch flask numpy
+   pip install -r requirements.txt
    ```
 
 3. Start the backend server:
