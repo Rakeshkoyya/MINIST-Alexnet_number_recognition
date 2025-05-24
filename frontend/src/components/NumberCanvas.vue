@@ -18,16 +18,20 @@
     <div class="prediction-wrapper">
       <div class="prediction-header">
         <h3>Prediction</h3>
-        <div class="confidence-meter">
-          <div class="meter-bar" :style="{ width: confidenceMeterWidth }"></div>
-        </div>
+        <Transition name="fade-out" mode="out-in">
+          <div v-if="result" class="confidence-meter">
+            <div class="meter-bar" :style="{ width: confidenceMeterWidth }"></div>
+          </div>
+        </Transition>
       </div>
       <div class="result-container">
-        <div v-if="result" class="result-item">
-          <span class="prediction-text">{{ result.split('(')[0] }}</span>
-          <span class="confidence-text">{{ result.split('(')[1] }}</span>
-        </div>
-        <div v-else class="placeholder">Draw a digit and click predict...</div>
+        <Transition name="fade-out" mode="out-in">
+          <div v-if="result" class="result-item">
+            <span class="prediction-text">{{ result.split('(')[0] }}</span>
+            <span class="confidence-text">{{ result.split('(')[1] }}</span>
+          </div>
+          <div v-else class="placeholder">Draw a digit and click predict...</div>
+        </Transition>
       </div>
     </div>
   </div>
@@ -112,10 +116,11 @@ export default {
   background: #f5f5f5;
   border-radius: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .canvas-wrapper {
-  flex: 1;
+  flex: 1 1 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -127,6 +132,7 @@ export default {
   font-size: 1.8rem;
   font-weight: 600;
   margin: 0;
+  letter-spacing: 0.025em;
 }
 
 canvas {
@@ -147,8 +153,9 @@ canvas {
   border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease-out;
   min-width: 120px;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1);
 }
 
 .clear-btn {
@@ -158,7 +165,14 @@ canvas {
 
 .clear-btn:hover {
   background: #ff3333;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.clear-btn:active {
+  background: #e62e2e;
+  transform: translateY(0px) scale(0.97);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .predict-btn {
@@ -168,11 +182,18 @@ canvas {
 
 .predict-btn:hover {
   background: #45a049;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.predict-btn:active {
+  background: #3d8b40;
+  transform: translateY(0px) scale(0.97);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .prediction-wrapper {
-  flex: 1;
+  flex: 1 1 50%;
   background: white;
   padding: 2rem;
   border-radius: 16px;
@@ -233,5 +254,12 @@ canvas {
 .placeholder {
   color: #666;
   font-style: italic;
+}
+
+.fade-out-enter-active, .fade-out-leave-active {
+  transition: opacity 0.3s ease-out;
+}
+.fade-out-enter-from, .fade-out-leave-to {
+  opacity: 0;
 }
 </style>
